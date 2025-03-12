@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	_ "github.com/lib/pq"
@@ -51,7 +50,42 @@ func main() {
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 
 		msg.Text = "Hi chel"
+		switch {
+		case update.Message.Text == "/help":
+			// Запрос списка команд
+			msg.Text = " Вот список команд:\n"
+			msg.Text = msg.Text + "/add - это добавление\n"
+		}
+		// Okay, we're sending our message off! We don't care about the message
+		// we just sent, so we'll discard it.
+		//	if _, err := bot.Send(msg); err != nil {
+		// Note that panics are a bad way to handle errors. Telegram can
+		// have service outages or network errors, you should retry sending
+		// messages or more gracefully handle failures.
+		//	panic(err)
+		//}
 
+		// send db data
+		// Perform a sample query
+		//		rows, err := db.Query("SELECT * FROM cinema_rom")
+		//	if err != nil {
+		//		panic(err)
+		//	}
+		//	defer rows.Close()
+
+		// Iterate through the results
+		//for rows.Next() {
+		//	var id int
+		//	var name string
+		//	var allmessage string
+		//	var id_cinema int
+		//	if err := rows.Scan(&id, &name, &id_cinema); err != nil {
+		//		panic(err)
+		//	}
+		//	fmt.Printf("ID: %d, Name: %s ID_cinema %d\n",
+		//		id, name, id_cinema)
+		//	allmessage = name
+		//	msg.Text = allmessage
 		// Okay, we're sending our message off! We don't care about the message
 		// we just sent, so we'll discard it.
 		if _, err := bot.Send(msg); err != nil {
@@ -60,36 +94,6 @@ func main() {
 			// messages or more gracefully handle failures.
 			panic(err)
 		}
-
-		// send db data
-		// Perform a sample query
-		rows, err := db.Query("SELECT * FROM cinema_rom")
-		if err != nil {
-			panic(err)
-		}
-		defer rows.Close()
-
-		// Iterate through the results
-		for rows.Next() {
-			var id int
-			var name string
-			var allmessage string
-			var id_cinema int
-			if err := rows.Scan(&id, &name, &id_cinema); err != nil {
-				panic(err)
-			}
-			fmt.Printf("ID: %d, Name: %s ID_cinema %d\n",
-				id, name, id_cinema)
-			allmessage = name
-			msg.Text = allmessage
-			// Okay, we're sending our message off! We don't care about the message
-			// we just sent, so we'll discard it.
-			if _, err := bot.Send(msg); err != nil {
-				// Note that panics are a bad way to handle errors. Telegram can
-				// have service outages or network errors, you should retry sending
-				// messages or more gracefully handle failures.
-				panic(err)
-			}
-		}
+		//}
 	}
 }
